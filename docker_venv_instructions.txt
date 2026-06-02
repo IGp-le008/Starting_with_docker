@@ -1,0 +1,68 @@
+========================================================================
+DOCKER-POWERED VIRTUAL ENVIRONMENT CREATION GUIDE
+========================================================================
+Goal: Use a Docker container as a one-time "factory" to generate a real, 
+local Python virtual environment (.venv) inside your project directory. 
+This avoids installing multiple Python versions on your host PC while 
+allowing VS Code to naturally discover the interpreter.
+
+------------------------------------------------------------------------
+STEP 1: GENERATE THE VIRTUAL ENVIRONMENT USING DOCKER
+------------------------------------------------------------------------
+Navigate to your project directory (e.g., ~/Documents/Langchain_models/Base_Images)
+and execute the following single-line command:
+
+  docker run --rm -v "$(pwd)":/app -w /app python:3.10 python -m venv .venv
+
+Command Breakdown:
+  --rm               Removes the container automatically once it finishes 
+                     generating the environment, keeping your system clean.
+  -v "$(pwd)":/app   Mounts (shares) your current local working directory 
+                     into the container at the path '/app'.
+  -w /app            Sets the active container working directory to '/app'.
+  python:3.10        Uses your locally cached Docker image.
+  python -m venv .venv Tells the container's internal Python 3.10 engine 
+                     to build a standard virtual environment named '.venv' 
+                     directly inside your mounted folder.
+
+------------------------------------------------------------------------
+STEP 2: FIX FILE PERMISSIONS (CRUCIAL FOR LINUX SYSTEMS)
+------------------------------------------------------------------------
+Because the Docker container runs internally as the 'root' user, the newly 
+created files inside the '.venv' directory will be locked to root ownership. 
+Change ownership back to your current system user account by running:
+
+  sudo chown -R $USER:$USER .venv
+
+------------------------------------------------------------------------
+STEP 3: CONFIGURING VS CODE TO RECOGNIZE THE ENVIRONMENT
+------------------------------------------------------------------------
+1. Launch VS Code and open your project folder.
+2. Open the Command Palette using 'Ctrl + Shift + P' (or Cmd + Shift + P on Mac).
+3. Search for and select: "Python: Select Interpreter"
+4. Click on "Enter interpreter path..." and then choose "Find..."
+5. Navigate through the folder tree: .venv -> bin -> select the 'python' binary.
+
+Now, you can open your standard terminal panel within VS Code, activate the 
+environment natively, and install your dependencies:
+
+  source .venv/bin/activate
+  pip install -r requirements.txt
+
+------------------------------------------------------------------------
+REUSING THIS WORKFLOW FOR FUTURE PROJECTS
+------------------------------------------------------------------------
+When you initiate a brand new project in another folder, you do not need 
+to re-download anything or install runtimes locally:
+
+1. Open a terminal and navigate to your new project directory.
+2. Execute the exact same sequence of commands:
+   
+   docker run --rm -v "$(pwd)":/app -w /app python:3.10 python -m venv .venv
+   sudo chown -R $USER:$USER .venv
+
+3. Docker will instantly fetch the 'python:3.10' image out of your machine's 
+   local storage cache (taking zero download time) and drop a clean, isolated 
+   virtual environment right into your new project workspace.
+
+========================================================================

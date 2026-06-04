@@ -1,6 +1,6 @@
 #Ignore all files and directories
-*
+/*
 
-#Just add 0.Check and Base_Images directories
+#Just add all the files and folders within Langchain_models
 !Langchain_models
 !Langchain_models/**

@@ -2,6 +2,5 @@
 *
 
 #Just add 0.Check and Base_Images directories
-!0.Check/
-!Base_Images/
-!docker_venv_instructions.txt
+!Langchain_models
+!Langchain_models/**

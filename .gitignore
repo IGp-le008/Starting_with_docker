@@ -1,0 +1,11 @@
+#By default ignore all the files
+*/
+
+#Only allow this folder (CodingEnter) to be read
+!CodingEnter
+!CodingEnter/**
+
+#Ignore all the .env files
+
+*.env
+*.swap

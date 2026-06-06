@@ -1,0 +1,21 @@
+services:
+        app:
+                image: pepo/pyapp
+                ports:
+                        - 8080:8000
+                        - 9000:8000
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+
+                command:
+                        python -m http.server 8000
+
+                labels:
+                        - "my_custom_tag:pyapp_compose"
+
+                container_name: pyapp_container
+
+             
+           
+                        

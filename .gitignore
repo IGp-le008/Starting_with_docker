@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #By default ignore all the files
 */
 
@@ -9,3 +10,11 @@
 
 *.env
 *.swap
+=======
+#Ignore all files and directories
+/*
+
+#Just add all the files and folders within Langchain_models
+!Langchain_models
+!Langchain_models/**
+>>>>>>> 6b8b7ceb27231c331950a98d7f7337866287d359
